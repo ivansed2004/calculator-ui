@@ -58,15 +58,15 @@ public class Runner {
             String hyperbolaAnalyticalFilename = String.format("hyperbola_analytical%d.txt", fileNum);
 
             Spline sbf = getSplineBasedFunction( file, 20 );
-            getPersistedSpectrum( sbf, targetPath, spectrumDiscreteFilename );
+            getDiscreteSpectrum( sbf, targetPath, spectrumDiscreteFilename );
 
             Interferogram interferogram = getInterferogram( sbf );
-            getPersistedInterferogram( interferogram, targetPath, interferogramDiscreteFilename );
-            getPrintedInterferogram( interferogram, targetPath, interferogramAnalyticalFilename );
+            getDiscreteInterferogram( interferogram, targetPath, interferogramDiscreteFilename );
+            getAnalyticalInterferogram( interferogram, targetPath, interferogramAnalyticalFilename );
 
             Hyperbola hyperbola = getHyperbola( interferogram );
-            getPersistedHyperbola( hyperbola, targetPath, hyperbolaDiscreteFilename );
-            getPrintedHyperbola( hyperbola, targetPath, hyperbolaAnalyticalFilename );
+            getDiscreteHyperbola( hyperbola, targetPath, hyperbolaDiscreteFilename );
+            getAnalyticalHyperbola( hyperbola, targetPath, hyperbolaAnalyticalFilename );
 
             System.out.printf("\nThe directory for source file №%d has been generated.\n", fileNum);
         }
@@ -96,7 +96,7 @@ public class Runner {
         frame.dispose();
     }
 
-    public static void getPrintedHyperbola( Hyperbola hyperbola, String targetPath, String fileName )
+    public static void getAnalyticalHyperbola( Hyperbola hyperbola, String targetPath, String fileName )
             throws IOException {
         HyperbolaExpressionBuilder builder = new HyperbolaExpressionBuilder();
         HyperbolaExpressionPrinter printer = new HyperbolaExpressionPrinter();
@@ -105,7 +105,7 @@ public class Runner {
         File file = printer.perform( stringsToPrint, Map.of() );
     }
 
-    public static void getPersistedHyperbola( Hyperbola hyperbola, String targetPath, String fileName )
+    public static void getDiscreteHyperbola( Hyperbola hyperbola, String targetPath, String fileName )
             throws IOException {
         HyperbolaSampler sampler = new HyperbolaSampler();
         HyperbolaSamplePrinter printer = new HyperbolaSamplePrinter();
@@ -119,7 +119,7 @@ public class Runner {
         return new Hyperbola( interferogram );
     }
 
-    public static void getPrintedInterferogram( Interferogram interferogram, String targetPath, String fileName )
+    public static void getAnalyticalInterferogram( Interferogram interferogram, String targetPath, String fileName )
             throws IOException {
         InterferogramExpressionBuilder builder = new UnsignedInterferogramExpressionBuilder();
         InterferogramExpressionPrinter printer = new InterferogramExpressionPrinter();
@@ -128,7 +128,7 @@ public class Runner {
         File file = printer.perform( stringsToPrint, Map.of() );
     }
 
-    public static void getPersistedInterferogram( Interferogram interferogram, String targetPath, String fileName )
+    public static void getDiscreteInterferogram( Interferogram interferogram, String targetPath, String fileName )
             throws IOException {
         InterferogramSampler sampler = new InterferogramSampler();
         InterferogramSamplePrinter printer = new InterferogramSamplePrinter();
@@ -142,7 +142,7 @@ public class Runner {
         return new Interferogram( sbf );
     }
 
-    public static void getPersistedSpectrum( Spline sbf, String targetPath, String fileName )
+    public static void getDiscreteSpectrum( Spline sbf, String targetPath, String fileName )
             throws IOException {
         SplineSampler sampler = new SplineSampler();
         SplineSamplePrinter printer = new SplineSamplePrinter();
