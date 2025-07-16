@@ -16,6 +16,7 @@ import ru.sedinkin.calculator_core.samplers.HyperbolaSampler;
 import ru.sedinkin.calculator_core.samplers.InterferogramSampler;
 import ru.sedinkin.calculator_core.samplers.SplineSampler;
 import ru.sedinkin.calculator_ui.environment.YamlParser;
+import ru.sedinkin.calculator_ui.utils.Persistence;
 
 import javax.swing.*;
 import java.awt.*;
@@ -102,7 +103,8 @@ public class Runner {
         HyperbolaExpressionPrinter printer = new HyperbolaExpressionPrinter();
 
         List<String> stringsToPrint = builder.perform( hyperbola, Map.of() );
-        File file = printer.perform( stringsToPrint, Map.of() );
+        File analyticalHyperbolaFile = printer.perform( stringsToPrint, Map.of() );
+        Persistence.persist(analyticalHyperbolaFile, targetPath, fileName);
     }
 
     public static void getDiscreteHyperbola( Hyperbola hyperbola, String targetPath, String fileName )
@@ -112,7 +114,8 @@ public class Runner {
 
         Map<Double, Double> samples = sampler
                 .perform( hyperbola, Map.of("start", 1429.155, "end", 4000.092, "period", 1.929)  );
-        File file = printer.perform( samples, Map.of() );
+        File discreteHyperbolaFile = printer.perform( samples, Map.of() );
+        Persistence.persist(discreteHyperbolaFile, targetPath, fileName);
     }
 
     public static Hyperbola getHyperbola( Interferogram interferogram ) {
@@ -125,7 +128,8 @@ public class Runner {
         InterferogramExpressionPrinter printer = new InterferogramExpressionPrinter();
 
         List<String> stringsToPrint = builder.perform( interferogram, Map.of() );
-        File file = printer.perform( stringsToPrint, Map.of() );
+        File analyticalInterferogramFile = printer.perform( stringsToPrint, Map.of() );
+        Persistence.persist(analyticalInterferogramFile, targetPath, fileName);
     }
 
     public static void getDiscreteInterferogram( Interferogram interferogram, String targetPath, String fileName )
@@ -135,7 +139,8 @@ public class Runner {
 
         Map<Double, Double> samples = sampler
                 .perform( interferogram, Map.of("start", 1429.155, "end", 4000.092, "period", 1.929) );
-        File file = printer.perform( samples, Map.of() );
+        File discreteInterferogramFile = printer.perform( samples, Map.of() );
+        Persistence.persist(discreteInterferogramFile, targetPath, fileName);
     }
 
     public static Interferogram getInterferogram( Spline sbf ) {
@@ -149,7 +154,8 @@ public class Runner {
 
         Map<Double, Double> samples = sampler
                 .perform( sbf, Map.of( "period", 1.929 ) );
-        File file = printer.perform( samples, Map.of() );
+        File discreteSpectrumFile = printer.perform( samples, Map.of() );
+        Persistence.persist(discreteSpectrumFile, targetPath, fileName);
     }
 
     public static Spline getSplineBasedFunction( File file, int period ) {
